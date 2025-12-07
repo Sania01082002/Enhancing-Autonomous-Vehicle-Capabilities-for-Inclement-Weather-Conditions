@@ -20,4 +20,61 @@ safe operation in all conditions, advanced sensor fusion techniques are needed t
 system robustness.
 # Overview
 ## Python-Related Work
-### sensor fusion and preprocessing
+### 1. Sensor fusion and preprocessing
+- Converted radar data from polar to Cartesian coordinates using NumPy.
+- Mapped 3D radar points to the 2D camera image plane with numpy.linalg.
+- Overlaid radar points as red dots on camera images using OpenCV’s cv2.circle.
+- Stored fused images with annotations for object detection.
+- Aligned camera and radar timestamps using a Pandas time index for synchronization.
+### 2. Object Detection in Adverse Weather
+- Simulated rain using OpenCV with white dashed lines of adjustable intensity.
+- Simulated fog by reducing contrast, adding a gray overlay, and applying Gaussian blur.
+- Used Faster R-CNN, pre-trained on COCO, fine-tuned in PyTorch with torch.optim.
+- Trained on 100 nuScenes camera frames labeled with vehicles over multiple
+epochs.
+- Processed weather-affected frames, drawing bounding boxes with cv2.rectangle.
+## Transition from Python to MATLAB
+The initial phase of the project was implemented in Python, where Faster R-CNN was
+used for object detection under normal and adverse weather conditions, and geometric
+sensor fusion aligned Camera, Radar, and LiDAR data. However, Python lacked real-time
+multi-object tracking, dynamic environments, and sensor degradation models, making it
+insufficient for evaluating JPDA performance.
+To overcome these limitations, the project transitioned to MATLAB, which provides
+real-time driving scenario simulation using the Automated Driving Toolbox and Simulink.
+MATLAB enables dynamic multi-object tracking, sensor noise modeling, and motion
+estimation, allowing for a more comprehensive evaluation of JPDA tracking performance
+in adverse weather.
+## MATLAB-Related Work
+- Developed an AV model in Simulink with a sensor fusion system in a virtual
+environment.
+- Integrated camera and radar data using the JPDA algorithm for robust tracking.
+- Clustered radar data with DBSCAN for effective object grouping.
+- Detected vehicles initially with the ACF algorithm from camera frames.
+- Extracted lane detections from forward-facing camera frames.
+- Retrained YOLOv2 on a generated dataset as an alternative to ACF.
+- Tested the model under simulated rain and fog conditions.
+- Evaluated performance using F1 score and recall rate to assess detection credibility.
+# Objectives
+- Simulate a sensor fusion system integrating Radar and Camera data to test its
+effectiveness for autonomous vehicle safety in adverse weather conditions.
+- Model weather scenarios, including rain and fog, within a simulation environment.
+- Assess the performance of ACF and YOLO in challenging weather conditions to
+determine the more accurate object detection algorithm.
+- Evaluate the sensor fusion system’s performance by validating vehicle detection
+accuracy under the selected algorithm.
+# Methodology
+## Dataset Selection
+This initial step involved selecting an appropriate dataset to support the simulation of
+sensor fusion and object detection in adverse weather conditions. The nuScenes mini
+dataset was chosen, comprising radar and camera data, due to its comprehensive coverage
+of real-world driving scenarios. This dataset’s richness in diverse environmental data
+made it ideal for testing the robustness of autonomous vehicle (AV) perception under
+simulated rain and fog. The simulation environment utilized Python IDLE, leveraging
+the nuScenes-devkit to efficiently extract radar and camera data, ensuring a seamless
+workflow for subsequent analysis and fusion tasks.
+## Visualization of Sensor Data
+Visualization was employed to inspect and validate the quality of the extracted sensor
+data. Camera images were displayed using matplotlib.pyplot.imshow() in Python, allowing for a clear assessment of visual fidelity under varying conditions. Concurrently,
+radar data was plotted as scatter plots with matplotlib.pyplot.scatter(), enabling analysis of its spatial distribution and point cloud structure. This dual visualization approach
+provided insights into the raw data characteristics, facilitating the identification of potential challenges in weather-affected scenarios and laying the groundwork for effective
+preprocessing.
